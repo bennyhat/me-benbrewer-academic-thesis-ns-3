@@ -38,6 +38,7 @@
 #include "ns3/trace-source-accessor.h"
 #include "onoff-application.h"
 #include "ns3/udp-socket-factory.h"
+#include "ns3/qos-tag.h"
 
 NS_LOG_COMPONENT_DEFINE ("OnOffApplication");
 
@@ -245,6 +246,7 @@ void OnOffApplication::SendPacket ()
 
   NS_ASSERT (m_sendEvent.IsExpired ());
   Ptr<Packet> packet = Create<Packet> (m_pktSize);
+  //packet->AddPacketTag (QosTag (6));
   m_txTrace (packet);
   m_socket->Send (packet);
   m_totBytes += m_pktSize;
@@ -277,6 +279,12 @@ void OnOffApplication::ConnectionSucceeded (Ptr<Socket>)
 
   m_connected = true;
   ScheduleStartEvent ();
+}
+
+uint32_t
+OnOffApplication::GetTotalBytes ()
+{
+  return m_totBytes;
 }
 
 void OnOffApplication::ConnectionFailed (Ptr<Socket>)

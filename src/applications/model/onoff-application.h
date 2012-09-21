@@ -101,6 +101,7 @@ public:
    * limit.
    */
   void SetMaxBytes (uint32_t maxBytes);
+  uint32_t GetTotalBytes (void);
 
   /**
    * \return pointer to associated socket

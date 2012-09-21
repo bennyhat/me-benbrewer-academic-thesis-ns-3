@@ -17,6 +17,8 @@
  *
  * Authors: George F. Riley<riley@ece.gatech.edu>
  *          Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
+ *
+ * Changes by Benjamin Brewer: changed private to protected so I could subclass
  */
 #ifndef NODE_H
 #define NODE_H
@@ -208,12 +210,12 @@ protected:
    */
   virtual void DoDispose (void);
   virtual void DoStart (void);
-private:
+protected:
   void NotifyDeviceAdded (Ptr<NetDevice> device);
   bool NonPromiscReceiveFromDevice (Ptr<NetDevice> device, Ptr<const Packet>, uint16_t protocol, const Address &from);
   bool PromiscReceiveFromDevice (Ptr<NetDevice> device, Ptr<const Packet>, uint16_t protocol,
                                  const Address &from, const Address &to, NetDevice::PacketType packetType);
-  bool ReceiveFromDevice (Ptr<NetDevice> device, Ptr<const Packet>, uint16_t protocol,
+  virtual bool ReceiveFromDevice (Ptr<NetDevice> device, Ptr<const Packet>, uint16_t protocol,
                           const Address &from, const Address &to, NetDevice::PacketType packetType, bool promisc);
 
   void Construct (void);

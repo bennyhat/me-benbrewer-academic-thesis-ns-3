@@ -16,6 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Author: Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
+ *
+ * Changes by Benjamin Brewer: made a little change on the AIFS to make the bottom
+ * two ACs equal. This was so I could work without any sort of rate control
+ * and not have queue overflows
  */
 #include "wifi-mac.h"
 #include "dcf.h"
@@ -385,7 +389,8 @@ WifiMac::ConfigureDcf (Ptr<Dcf> dcf, uint32_t cwmin, uint32_t cwmax, enum AcInde
     case AC_BK:
       dcf->SetMinCw (cwmin);
       dcf->SetMaxCw (cwmax);
-      dcf->SetAifsn (7);
+      //dcf->SetAifsn (7);
+      dcf->SetAifsn (3);
       break;
     case AC_BE_NQOS:
       dcf->SetMinCw (cwmin);

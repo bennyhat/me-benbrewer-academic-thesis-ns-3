@@ -16,6 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Author: Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
+ *
+ * Changes by Benjamin Brewer: changed out the EdcaTxopN with EdcaTxopCfbN
+ *                             changed out the MacLow with SchedMacLow
  */
 #include "regular-wifi-mac.h"
 
@@ -28,9 +31,11 @@
 #include "mac-rx-middle.h"
 #include "mac-tx-middle.h"
 #include "mac-low.h"
+#include "schedulable-mac-low.h"
 #include "dcf.h"
 #include "dcf-manager.h"
 #include "wifi-phy.h"
+#include "ns3/simulator.h"
 
 #include "msdu-aggregator.h"
 
@@ -48,7 +53,7 @@ RegularWifiMac::RegularWifiMac ()
 
   m_txMiddle = new MacTxMiddle ();
 
-  m_low = CreateObject<MacLow> ();
+  m_low = CreateObject<SchedMacLow> ();
   m_low->SetRxCallback (MakeCallback (&MacRxMiddle::Receive, m_rxMiddle));
 
   m_dcfManager = new DcfManager ();
@@ -145,7 +150,7 @@ RegularWifiMac::SetupEdcaQueue (enum AcIndex ac)
   // already configured.
   NS_ASSERT (m_edca.find (ac) == m_edca.end ());
 
-  Ptr<EdcaTxopN> edca = CreateObject<EdcaTxopN> ();
+  Ptr<EdcaTxopCfbN> edca = CreateObject<EdcaTxopCfbN> ();
   edca->SetLow (m_low);
   edca->SetManager (m_dcfManager);
   edca->SetTxMiddle (m_txMiddle);

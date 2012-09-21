@@ -16,6 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Author:  Tom Henderson (tomhend@u.washington.edu)
+ *
+ * Changes by Benjamin Brewer - changed private to protected so I could easily
+ * subclass
  */
 
 #ifndef PACKET_SINK_H
@@ -90,12 +93,12 @@ public:
  
 protected:
   virtual void DoDispose (void);
-private:
+
   // inherited from Application base class.
   virtual void StartApplication (void);    // Called at time specified by Start
   virtual void StopApplication (void);     // Called at time specified by Stop
 
-  void HandleRead (Ptr<Socket>);
+  virtual void HandleRead (Ptr<Socket>);
   void HandleAccept (Ptr<Socket>, const Address& from);
   void HandlePeerClose (Ptr<Socket>);
   void HandlePeerError (Ptr<Socket>);

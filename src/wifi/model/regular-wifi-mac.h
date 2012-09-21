@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Author: Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
+ *
+ * Changes by Benjamin Brewer: changed private to protected so I could subclass
  */
 #ifndef REGULAR_WIFI_MAC_H
 #define REGULAR_WIFI_MAC_H
@@ -23,7 +25,7 @@
 #include "ns3/wifi-mac.h"
 
 #include "dca-txop.h"
-#include "edca-txop-n.h"
+#include "edca-txop-cfb-n.h"
 #include "wifi-remote-station-manager.h"
 #include "ssid.h"
 #include "qos-utils.h"
@@ -331,7 +333,7 @@ private:
    *
    * \param ac the Access Category index of the queue to initialise.
    */
-  void SetupEdcaQueue (enum AcIndex ac);
+  virtual void SetupEdcaQueue (enum AcIndex ac);
 
   /** Accessor for the DCF object */
   Ptr<DcaTxop> GetDcaTxop (void) const;

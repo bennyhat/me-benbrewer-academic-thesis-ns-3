@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Author: Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
+ *
+ * Changes by Benjamin Brewer: added some LLC behavior for converting UP to QoSTag
  */
 #include "wifi-net-device.h"
 #include "wifi-mac.h"
@@ -29,6 +31,8 @@
 #include "ns3/node.h"
 #include "ns3/trace-source-accessor.h"
 #include "ns3/log.h"
+#include "ns3/vlan-header.h"
+#include "ns3/qos-tag.h"
 
 NS_LOG_COMPONENT_DEFINE ("WifiNetDevice");
 
@@ -254,9 +258,24 @@ WifiNetDevice::Send (Ptr<Packet> packet, const Address& dest, uint16_t protocolN
 
   Mac48Address realTo = Mac48Address::ConvertFrom (dest);
 
+  // BB - converting VLAN UP to QoSTag
+  // Peek LLC header
+  if (protocolNumber == 0x8100)
+    {
+      // If type is 0x8100
+      // Peek Vlan header
+      VlanHeader vlan;
+      packet->PeekHeader(vlan);
+
+      // Get the TID and put it in a QoSTag
+      packet->AddPacketTag (QosTag (vlan.GetUserPriority()));
+    }
+
   LlcSnapHeader llc;
   llc.SetType (protocolNumber);
   packet->AddHeader (llc);
+
+  NS_LOG_UNCOND ("queuing packet of size " << packet->GetSize());
 
   m_mac->NotifyTx (packet);
   m_mac->Enqueue (packet, realTo);
