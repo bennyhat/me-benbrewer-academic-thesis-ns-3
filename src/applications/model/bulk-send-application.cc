@@ -44,7 +44,7 @@ BulkSendApplication::GetTypeId (void)
     .SetParent<Application> ()
     .AddConstructor<BulkSendApplication> ()
     .AddAttribute ("SendSize", "The amount of data to send each time.",
-                   UintegerValue (512),
+                   UintegerValue (1500),
                    MakeUintegerAccessor (&BulkSendApplication::m_sendSize),
                    MakeUintegerChecker<uint32_t> (1))
     .AddAttribute ("Remote", "The address of the destination",
@@ -171,7 +171,8 @@ void BulkSendApplication::SendData (void)
         {
           toSend = std::min (m_sendSize, m_maxBytes - m_totBytes);
         }
-      NS_LOG_LOGIC ("sending packet at " << Simulator::Now ());
+      NS_LOG_LOGIC ("sending packet at " << Simulator::Now ()
+        << " with packet size of " << toSend);
       Ptr<Packet> packet = Create<Packet> (toSend);
       m_txTrace (packet);
       int actual = m_socket->Send (packet);
@@ -217,6 +218,12 @@ void BulkSendApplication::DataSend (Ptr<Socket>, uint32_t)
     { // Only send new data if the connection has completed
       Simulator::ScheduleNow (&BulkSendApplication::SendData, this);
     }
+}
+
+uint32_t
+BulkSendApplication::GetTotalBytes (void)
+{
+  return m_totBytes;
 }
 
 

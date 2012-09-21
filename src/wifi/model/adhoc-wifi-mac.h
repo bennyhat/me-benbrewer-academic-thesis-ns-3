@@ -18,6 +18,8 @@
  *
  * Author: Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
  * Author: Mirko Banchi <mk.banchi@gmail.com>
+ *
+ * Changes by Benjamin Brewer: changed private to protected so I could subclass
  */
 #ifndef ADHOC_WIFI_MAC_H
 #define ADHOC_WIFI_MAC_H
@@ -61,7 +63,7 @@ public:
    */
   virtual void Enqueue (Ptr<const Packet> packet, Mac48Address to);
 
-private:
+protected:
   virtual void Receive (Ptr<Packet> packet, const WifiMacHeader *hdr);
 };
 

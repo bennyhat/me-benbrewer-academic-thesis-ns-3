@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Author: Mirko Banchi <mk.banchi@gmail.com>
+ *
+ * Changes by Benjamin Brewer: changed private to protected so I could subclass
  */
 #ifndef QOS_WIFI_MAC_HELPER_H
 #define QOS_WIFI_MAC_HELPER_H
@@ -131,7 +133,7 @@ public:
    * \param timeout number of block of 1024 microseconds.
    */
   void SetBlockAckInactivityTimeoutForAc (enum AcIndex ac, uint16_t timeout);
-private:
+protected:
   /**
    * \internal
    * \returns a newly-created MAC object.

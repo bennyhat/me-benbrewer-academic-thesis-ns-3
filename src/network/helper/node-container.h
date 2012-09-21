@@ -16,6 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * Author: Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
+ *
+ * Changes by Benjamin Brewer - changed private to protected so I could
+ * subclass
  */
 #ifndef NODE_CONTAINER_H
 #define NODE_CONTAINER_H
@@ -287,7 +290,7 @@ public:
    */
   static NodeContainer GetGlobal (void);
 
-private:
+protected:
   std::vector<Ptr<Node> > m_nodes;
 };
 

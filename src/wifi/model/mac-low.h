@@ -18,6 +18,8 @@
  *
  * Author: Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
  * Author: Mirko Banchi <mk.banchi@gmail.com>
+ *
+ * Changes by Benjamin Brewer: changed private to protected so I could subclass
  */
 #ifndef MAC_LOW_H
 #define MAC_LOW_H
@@ -344,7 +346,7 @@ public:
    */
   uint32_t GetNextPacketSize (void) const;
 
-private:
+protected:
   friend std::ostream &operator << (std::ostream &os, const MacLowTransmissionParameters &params);
   uint32_t m_nextSize;
   enum
@@ -447,7 +449,7 @@ public:
    * This method is typically invoked by the lower PHY layer to notify
    * the MAC layer that a packet was successfully received.
    */
-  void ReceiveOk (Ptr<Packet> packet, double rxSnr, WifiMode txMode, WifiPreamble preamble);
+  virtual void ReceiveOk (Ptr<Packet> packet, double rxSnr, WifiMode txMode, WifiPreamble preamble);
   /**
    * \param packet packet received.
    * \param rxSnr snr of packet received.
@@ -499,7 +501,7 @@ public:
    * associated to this AC.
    */
   void RegisterBlockAckListenerForAc (enum AcIndex ac, MacLowBlockAckEventListener *listener);
-private:
+protected:
   void CancelAllEvents (void);
   uint32_t GetAckSize (void) const;
   uint32_t GetBlockAckSize (enum BlockAckType type) const;

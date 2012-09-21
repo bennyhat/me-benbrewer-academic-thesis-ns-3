@@ -18,6 +18,8 @@
  *
  * Author: Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
  * Author: Mirko Banchi <mk.banchi@gmail.com>
+ *
+ * Changes by Benjamin Brewer: changed private to protected so I could subclass
  */
 #ifndef EDCA_TXOP_N_H
 #define EDCA_TXOP_N_H
@@ -107,23 +109,24 @@ public:
 
   /* dcf notifications forwarded here */
   bool NeedsAccess (void) const;
-  void NotifyAccessGranted (void);
+  virtual void NotifyAccessGranted (void);
+  virtual void NotifyCollision (void);
   void NotifyInternalCollision (void);
-  void NotifyCollision (void);
+
   /**
   * When a channel switching occurs, enqueued packets are removed.
   */
   void NotifyChannelSwitching (void);
 
   /*event handlers*/
-  void GotCts (double snr, WifiMode txMode);
-  void MissedCts (void);
-  void GotAck (double snr, WifiMode txMode);
+  virtual void GotCts (double snr, WifiMode txMode);
+  virtual void MissedCts (void);
+  virtual void GotAck (double snr, WifiMode txMode);
+  virtual void MissedAck (void);
   void GotBlockAck (const CtrlBAckResponseHeader *blockAck, Mac48Address recipient);
   void MissedBlockAck (void);
   void GotAddBaResponse (const MgtAddBaResponseHeader *respHdr, Mac48Address recipient);
   void GotDelBaFrame (const MgtDelBaHeader *delBaHdr, Mac48Address recipient);
-  void MissedAck (void);
   void StartNext (void);
   void Cancel (void);
 
@@ -141,7 +144,7 @@ public:
   Ptr<Packet> GetFragmentPacket (WifiMacHeader *hdr);
 
   void SetAccessCategory (enum AcIndex ac);
-  void Queue (Ptr<const Packet> packet, const WifiMacHeader &hdr);
+  virtual void Queue (Ptr<const Packet> packet, const WifiMacHeader &hdr);
   void SetMsduAggregator (Ptr<MsduAggregator> aggr);
   void PushFront (Ptr<const Packet> packet, const WifiMacHeader &hdr);
   void CompleteConfig (void);
@@ -150,8 +153,8 @@ public:
   void SetBlockAckInactivityTimeout (uint16_t timeout);
   void SendDelbaFrame (Mac48Address addr, uint8_t tid, bool byOriginator);
 
-private:
-  void DoStart ();
+protected:
+  virtual void DoStart ();
   /**
    * This functions are used only to correctly set addresses in a-msdu subframe.
    * If aggregating sta is a STA (in an infrastructured network):

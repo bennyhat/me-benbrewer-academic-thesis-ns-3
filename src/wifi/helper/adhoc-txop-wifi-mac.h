@@ -1,5 +1,7 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
+ * Copyright (c) 2012 Benjamin Brewer
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation;
@@ -12,16 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * Author: Benjamin Brewer <bb1267@my.bristol.ac.uk>
  */
+#ifndef ADHOC_TXOP_WIFI_MAC_H
+#define ADHOC_TXOP_WIFI_MAC_H
 
-#include "ns3/core-module.h"
+#include "adhoc-wifi-mac.h"
 
-NS_LOG_COMPONENT_DEFINE ("ScratchSimulator");
+namespace ns3 {
 
-using namespace ns3;
-
-int 
-main (int argc, char *argv[])
+/**
+ * \ingroup wifi
+ *
+ *
+ */
+class AdhocTxopWifiMac : public AdhocWifiMac
 {
-  NS_LOG_UNCOND ("Scratch Simulator");
-}
+public:
+  static TypeId GetTypeId (void);
+
+  AdhocTxopWifiMac ();
+  virtual ~AdhocTxopWifiMac ();
+
+protected:
+  void SetupEdcaQueue (enum AcIndex ac);
+};
+
+} // namespace ns3
+
+#endif /* ADHOC_TXOP_WIFI_MAC_H */
