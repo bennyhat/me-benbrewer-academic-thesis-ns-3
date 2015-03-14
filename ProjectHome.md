@@ -1,0 +1,1 @@
+This is a branch of NS-3.14 where I added TXOP functionality to the EDCA portions of the project. Functionality for VLAN UP to TID mappings was also added in the default Wireless device LLC.
